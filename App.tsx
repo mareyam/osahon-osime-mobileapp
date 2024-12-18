@@ -4,54 +4,32 @@
  *
  * @format
  */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return <View style={styles.redBox}>helo</View>;
-}
+import {View, Text, Image} from 'react-native';
+import tw from 'twrnc';
+import LoginComp from './src/components/auth/login/LoginComp';
+import SignupComp from './src/components/auth/signup/SignupComp';
+import MainScreen from './src/components/home/MainScreen';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Text style={styles.redBox}>helo</Text>
-    </SafeAreaView>
+    <MainScreen />
+    // <LoginComp />
+    // <SignupComp />
+    // <View style={tw`p-4 android:pt-2 bg-black dark:bg-black flex flex-row`}>
+    //   <View style={tw`p-4 bg-red-500`}>blue box</View>
+    //   <View style={tw`p-4 bg-pink-900`}>red box</View>
+    //   <View style={tw`p-4 bg-blue-500`}>pink box</View>
+    //   <Text style={tw`text-md text-white dark:text-white`}>
+    //     Hello{' '}
+    //     <Text style={tw`text-2xl text-purple-500 dark:text-white`}>World</Text>
+    //   </Text>
+    //   <Image
+    //     style={tw`h-32 w-24`}
+    //     source={{uri: 'https://picsum.photos/id/237/200/300'}}
+    //   />
+    // </View>
   );
 }
-
-const styles = StyleSheet.create({
-  redBox: {
-    backgroundColor: 'red',
-  },
-});
 
 export default App;
