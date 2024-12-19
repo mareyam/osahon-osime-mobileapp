@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, Button, Animated, StyleSheet} from 'react-native';
+import {View, Text, Animated} from 'react-native';
+import tw from 'twrnc';
 
 const Toast = ({message, text}: any) => {
   const opacity = useRef(new Animated.Value(0)).current;
@@ -25,11 +26,11 @@ const Toast = ({message, text}: any) => {
   }, [message, opacity]);
 
   return (
-    <View style={styles.container}>
+    <View style={tw`absolute bottom-12 w-full items-center`}>
       {message && (
         <Animated.View
           style={[
-            styles.toast,
+            tw`bg-gray-800 px-4 py-2 rounded-lg shadow-lg`,
             {
               opacity,
               transform: [
@@ -42,40 +43,15 @@ const Toast = ({message, text}: any) => {
               ],
             },
           ]}>
-          <Text style={styles.toastText}>{text}</Text>
+          <Text style={tw`text-white text-center text-sm`}>
+            {/* {text} */}
+          LLM is not integrated yet.
+
+          </Text>
         </Animated.View>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  toast: {
-    position: 'absolute',
-    bottom: 50,
-    left: '50%',
-    transform: [{translateX: -150}], // Center horizontally
-    width: 300,
-    backgroundColor: '#333333',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5, // Android shadow
-  },
-  toastText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontSize: 14,
-  },
-});
 
 export default Toast;

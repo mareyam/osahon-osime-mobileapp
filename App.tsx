@@ -10,10 +10,12 @@ import tw from 'twrnc';
 import LoginComp from './src/components/auth/login/LoginComp';
 import SignupComp from './src/components/auth/signup/SignupComp';
 import MainScreen from './src/components/home/MainScreen';
+import HomeComp from './src/components/home';
 
 function App(): React.JSX.Element {
   return (
-    <MainScreen />
+    <HomeComp />
+    // <MainScreen />
     // <LoginComp />
     // <SignupComp />
     // <View style={tw`p-4 android:pt-2 bg-black dark:bg-black flex flex-row`}>
