@@ -1,25 +1,86 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   Image,
   Pressable,
+  Alert,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 import tw from 'twrnc';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
 
-const LoginComp = () => {
+const LoginComp = ({navigation}: any) => {
   const [isFocused, setIsFocused] = useState(false);
-
-  const handleGoogleSignIn = async () => {
-    console.log('Google Sign In');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const getUserCollections = async () => {
+    const usersCollection = await firestore().collection('Users').get();
+    console.log('usersCollection');
+    console.log(usersCollection);
   };
 
-  const handleGithubSignIn = async () => {
-    console.log('GitHub Sign In');
+  useEffect(() => {
+    getUserCollections();
+  }, []);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '129025063036-fs3qkju7hh7iaq21el7b390c68erkbpr.apps.googleusercontent.com',
+    });
+  });
+
+  const handleGoogleSignIn = () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Email and password are required');
+      return;
+    }
+
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        Alert.alert('Success', 'User signed in successfully');
+        navigation.navigate('Home');
+      })
+      .catch(err => {
+        console.error('Error during login:', err);
+        // Alert.alert('Login Error', err.message);
+      });
   };
 
+  async function onGoogleButtonPress() {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+
+      const signInResult: any = await GoogleSignin.signIn();
+      console.log('signInResult');
+      console.log(signInResult);
+
+      const idToken = signInResult?.idToken || signInResult?.serverAuthCode;
+
+      if (!idToken) {
+        throw new Error('ID token not found');
+      }
+      console.log(idToken);
+      Alert.alert('Success login');
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      return auth().signInWithCredential(googleCredential);
+    } catch (error: any) {
+      console.error('Error during Google Sign-In', error);
+      // Alert.alert('Login Failed', error.message);
+    }
+  }
+
+  const handleRouteSignup = () => {
+    console.log('hi');
+    navigation.navigate('Signup');
+  };
   return (
     <View style={tw`flex-1 items-center justify-center bg-gray-100 px-6`}>
       <View style={tw`w-full max-w-md p-6`}>
@@ -31,6 +92,8 @@ const LoginComp = () => {
         <View>
           <TextInput
             placeholder="Enter Email"
+            value={email}
+            onChangeText={setEmail}
             style={tw`bg-white text-sm w-full p-3 mb-4 border rounded-lg ${
               isFocused
                 ? 'border-green-500 ring-2 ring-green-500'
@@ -42,6 +105,8 @@ const LoginComp = () => {
 
           <TextInput
             placeholder="Enter Password"
+            value={password}
+            onChangeText={setPassword}
             secureTextEntry
             style={tw`bg-white text-sm w-full p-3 mb-4 border rounded-lg ${
               isFocused
@@ -66,7 +131,12 @@ const LoginComp = () => {
           </Pressable>
 
           <Text style={tw`text-xs text-center text-gray-500 my-4`}>
-            Create an Account <Text style={tw`text-green-500`}>Sign Up</Text>
+            Don&apos;t have an account?{' '}
+            <Text
+              onPress={handleRouteSignup}
+              style={tw`text-green-500 font-semibold`}>
+              Sign Up
+            </Text>
           </Text>
         </View>
 
@@ -79,7 +149,7 @@ const LoginComp = () => {
 
         <View style={tw`gap-y-3`}>
           <Pressable
-            onPress={handleGoogleSignIn}
+            onPress={onGoogleButtonPress}
             style={({pressed}) =>
               tw.style(
                 `flex-row items-center justify-center w-full p-3 border border-neutral-300 rounded-lg`,
@@ -93,8 +163,8 @@ const LoginComp = () => {
             <Text style={tw`text-sm`}>Continue with Google</Text>
           </Pressable>
 
-          <Pressable
-            onPress={handleGithubSignIn}
+          {/* <Pressable
+            // onPress={handleGithubSignIn}
             style={({pressed}) =>
               tw.style(
                 `flex-row items-center justify-center w-full p-3 border border-neutral-300 rounded-lg`,
@@ -106,7 +176,7 @@ const LoginComp = () => {
               style={tw`w-6 h-6 mr-2`}
             />
             <Text style={tw`text-sm`}>Continue with GitHub</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     </View>

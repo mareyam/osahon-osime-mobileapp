@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "129025063036",
+    "project_id": "osahonosime-46910",
+    "storage_bucket": "osahonosime-46910.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129025063036:android:a135c0b86d6fb3225c31f9",
+        "android_client_info": {
+          "package_name": "com.osahonosime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129025063036-qh855pg96ln0v37ccordnjuvjqrkbdua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.osahonosime",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "129025063036-fs3qkju7hh7iaq21el7b390c68erkbpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1FkIqd5Q0VJqVOoP94YRa9JFbWwqSOso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129025063036-fs3qkju7hh7iaq21el7b390c68erkbpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

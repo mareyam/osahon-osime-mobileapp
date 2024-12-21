@@ -11,7 +11,7 @@ import Sidebar from './Sidebar';
 import MainScreen from './MainScreen';
 import Profile from './Profile';
 
-const HomeComp = () => {
+const HomeComp = ({navigation}: any) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const screenWidth = Dimensions.get('window').width;
   const sidebarAnimation = useRef(new Animated.Value(-screenWidth)).current; // Start off-screen
@@ -55,7 +55,7 @@ const HomeComp = () => {
           </TouchableOpacity>
         </View>
         <View style={tw`absolute top-5 right-5 z-10`}>
-          <Profile isCollapsed={true} />
+          <Profile isCollapsed={true} navigation={navigation} />
         </View>
 
         {/* Main Content */}
