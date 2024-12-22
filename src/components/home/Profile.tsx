@@ -31,15 +31,24 @@ const Profile = ({isCollapsed, navigation}: ProfileProps) => {
   useEffect(() => {
     const user = auth().currentUser;
     if (user) {
-      setUserName(user.displayName || user.email);
-      const firstLetter = (user.displayName || user.email || '')
-        .charAt(0)
-        .toUpperCase();
-      setUserName(firstLetter);
+      console.log('Display name is: ' + (user.displayName || 'N/A'));
+      console.log('Email is: ' + (user.email || 'N/A'));
+
+      if (user.displayName) {
+        const nameParts = user.displayName.split(' ');
+        const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
+        const secondInitial = nameParts[1]?.charAt(0).toUpperCase() || '';
+        setUserName(`${firstInitial}${secondInitial}`);
+      } else if (user.email) {
+        const firstLetter = user.email.charAt(0).toUpperCase();
+        setUserName(firstLetter);
+      } else {
+        setUserName('N/A');
+      }
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     auth()
       .signOut()
       .then(response => {
@@ -53,6 +62,34 @@ const Profile = ({isCollapsed, navigation}: ProfileProps) => {
         Alert.alert('Not able to logout!');
       });
   };
+
+  //try
+  // async function onGoogleSignOut() {
+  //   try {
+  //     // Sign out from Firebase authentication
+  //     await auth().signOut();
+
+  //     // Check if the user is signed in with Google
+  //     const isSignedIn = await GoogleSignin.isSignedIn();
+  //     if (isSignedIn) {
+  //       // Revoke access to the Google account
+  //       await GoogleSignin.revokeAccess();
+  //       // Sign out from Google
+  //       await GoogleSignin.signOut();
+  //       console.log('Google account disconnected successfully.');
+  //       Alert.alert('Sign Out', 'You have been signed out.');
+  //     } else {
+  //       console.log('No Google account is connected.');
+  //       Alert.alert('Sign Out', 'No account is connected.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during Google Sign-Out', error);
+  //     Alert.alert(
+  //       'Error',
+  //       error.message || 'An error occurred while signing out.',
+  //     );
+  //   }
+  // }
   return (
     <View style={tw`relative`}>
       <TouchableOpacity

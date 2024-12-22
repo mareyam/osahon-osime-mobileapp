@@ -36,7 +36,7 @@ const LoginComp = ({navigation}: any) => {
     });
   });
 
-  const handleGoogleSignIn = () => {
+  const handleEmailSignin = () => {
     if (!email || !password) {
       Alert.alert('Error', 'Email and password are required');
       return;
@@ -50,30 +50,32 @@ const LoginComp = ({navigation}: any) => {
       })
       .catch(err => {
         console.error('Error during login:', err);
-        // Alert.alert('Login Error', err.message);
+        Alert.alert('Login Error', err.message);
       });
   };
 
   async function onGoogleButtonPress() {
     try {
+      await GoogleSignin.signOut();
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
 
       const signInResult: any = await GoogleSignin.signIn();
-      console.log('signInResult');
-      console.log(signInResult);
 
-      const idToken = signInResult?.idToken || signInResult?.serverAuthCode;
+      const idToken = signInResult?.data.idToken;
+      console.log(signInResult?.data);
 
       if (!idToken) {
         throw new Error('ID token not found');
       }
       console.log(idToken);
-      Alert.alert('Success login');
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      return auth().signInWithCredential(googleCredential);
+      await auth().signInWithCredential(googleCredential);
+      Alert.alert('Success login');
+
+      // return auth().signInWithCredential(googleCredential);
     } catch (error: any) {
       console.error('Error during Google Sign-In', error);
-      // Alert.alert('Login Failed', error.message);
+      Alert.alert('Login Failed', error.message);
     }
   }
 
@@ -118,7 +120,7 @@ const LoginComp = ({navigation}: any) => {
           />
 
           <Pressable
-            onPress={handleGoogleSignIn}
+            onPress={handleEmailSignin}
             style={
               ({pressed}) =>
                 pressed
